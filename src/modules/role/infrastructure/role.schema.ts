@@ -1,0 +1,23 @@
+import { User } from '../../user/infrastructure/user.schema';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+@Entity({ name: 'roles' })
+export class Role {
+  @PrimaryColumn('uuid')
+  id: string;
+
+  @Column({ nullable: false })
+  name: string;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column({ type: 'timestamp', nullable: false })
+  createdAt: Date;
+
+  @Column({ type: 'timestamp', nullable: false })
+  updatedAt: Date;
+
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
+}
