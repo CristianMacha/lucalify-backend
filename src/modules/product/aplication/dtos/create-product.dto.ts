@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateProductDto {
@@ -13,7 +14,18 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsNumber()
+  @Type(() => Number)
   readonly price: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
+  readonly stock: number;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  readonly code: string;
 
   @ApiProperty()
   @IsUUID()

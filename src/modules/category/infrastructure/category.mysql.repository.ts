@@ -5,6 +5,8 @@ import { Category } from './category.schema';
 import { CategoryRepository } from '../domain/category.repository';
 import { CategoryValue } from '../domain/category.value';
 import { plainToInstance } from 'class-transformer';
+import { FilterCategoryDto } from '../aplication/dtos/filter-category.dto';
+import { ResponseList } from '../../../common/interfaces/response.interface';
 
 @Injectable()
 export class CategoryMysqlRepository
@@ -23,11 +25,46 @@ export class CategoryMysqlRepository
     return plainToInstance(CategoryValue, categorySaved);
   }
 
-  async listCategory(): Promise<CategoryValue[]> {
-    const categories = await this.find();
+  async listActiveCategories(): Promise<CategoryValue[]> {
+    const categories = await this.find({
+      where: { active: true },
+      order: { updatedAt: 'DESC' },
+    });
     return categories.map((category) =>
       plainToInstance(CategoryValue, category),
     );
+  }
+
+  async listFilterCategories(
+    filterCategoryDto: FilterCategoryDto,
+  ): Promise<ResponseList<CategoryValue>> {
+    const { textSearch, page, perPage } = filterCategoryDto;
+
+    const query = this.createQueryBuilder('category');
+
+    if (textSearch) {
+      query.where(
+        'category.name LIKE :textSearch OR category.description LIKE :textSearch',
+        { textSearch: `%${textSearch}%` },
+      );
+    }
+
+    query.orderBy('category.createdAt', 'DESC');
+    query.skip((page - 1) * perPage).take(perPage);
+
+    const totalItems = await query.getCount();
+    const totalPages = Math.ceil(totalItems / perPage);
+    const categories = await query.getMany();
+
+    return {
+      data: categories.map((category) =>
+        plainToInstance(CategoryValue, category),
+      ),
+      totalItems,
+      totalPages,
+      currentPage: page,
+      perPage,
+    };
   }
 
   async findCategoryById(id: string): Promise<CategoryValue | null> {
@@ -35,5 +72,10 @@ export class CategoryMysqlRepository
     if (!category) return null;
 
     return plainToInstance(CategoryValue, category);
+  }
+
+  async updateCategory(category: CategoryValue): Promise<CategoryValue | null> {
+    const categoryUpdated = await this.save(category);
+    return plainToInstance(CategoryValue, categoryUpdated);
   }
 }

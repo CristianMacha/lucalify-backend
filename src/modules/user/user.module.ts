@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 import { UserController } from './infrastructure/user.controller';
 import { User } from './infrastructure/user.schema';
@@ -10,6 +8,8 @@ import { UserUseCase } from './aplication/userUseCase';
 import { RoleMysqlRepository } from '../role/infrastructure/role.mysql.repository';
 import { AuthController } from './infrastructure/auth.controller';
 import { AuthUseCase } from './aplication/authUseCase';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { AuthUseCase } from './aplication/authUseCase';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
         signOptions: { expiresIn: '1d' },
+        global: true,
       }),
     }),
   ],

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class CreateCategoryDto {
   @ApiProperty()
@@ -9,4 +9,8 @@ export class CreateCategoryDto {
   @ApiProperty()
   @IsString()
   readonly description: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  active: boolean;
 }

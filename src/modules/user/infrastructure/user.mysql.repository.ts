@@ -33,7 +33,7 @@ export class UserMysqlRepository
   }
 
   async findByEmail(email: string): Promise<UserValue | null> {
-    const user = await this.findOne({ where: { email } });
+    const user = await this.findOne({ where: { email }, relations: ['role'] });
     if (!user) return null;
     return plainToInstance(UserValue, user);
   }

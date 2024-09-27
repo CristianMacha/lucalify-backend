@@ -1,6 +1,5 @@
 import { Category } from '../../category/infrastructure/category.schema';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { ProductVariant } from './product-variant.schema';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -14,13 +13,28 @@ export class Product {
   description: string;
 
   @Column({
+    nullable: false,
+    default: 0,
     type: 'decimal',
-    nullable: true,
     precision: 10,
     scale: 2,
-    default: 0,
   })
   price: number;
+
+  @Column({ nullable: false, default: 0 })
+  stock: number;
+
+  @Column({ nullable: false, unique: true })
+  code: string;
+
+  @Column({ nullable: false, default: true })
+  isActive: boolean;
+
+  @Column({ nullable: false })
+  createdBy: string;
+
+  @Column({ nullable: false })
+  updatedBy: string;
 
   @Column({ type: 'timestamp', nullable: false })
   createdAt: Date;
@@ -28,9 +42,6 @@ export class Product {
   @Column({ type: 'timestamp', nullable: false })
   updatedAt: Date;
 
-  @OneToMany(() => Category, (category) => category.products)
+  @ManyToOne(() => Category, (category) => category.products)
   category: Category;
-
-  @OneToMany(() => ProductVariant, (variant) => variant.product)
-  variants: ProductVariant[];
 }

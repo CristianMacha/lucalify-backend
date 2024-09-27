@@ -31,6 +31,14 @@ export class AuthUseCase {
     return { token: accessToken, user };
   }
 
+  public async userAuthenticaded(payload: Payload) {
+    const user = await this.userRepository.findUserById(payload.id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
+
   private async comparePassword(password: string, hashedPassword: string) {
     const isMatch = await bcrypt.compare(password, hashedPassword);
     return isMatch;
@@ -41,6 +49,7 @@ export class AuthUseCase {
       id: user.id,
       email: user.email,
       roleId: user.role.id,
+      name: user.name,
     };
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
