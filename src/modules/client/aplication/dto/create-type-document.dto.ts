@@ -7,6 +7,11 @@ export class CreateTypeDocumentDto {
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+
   @ApiProperty({ example: true })
   @IsBoolean()
   @IsNotEmpty()

@@ -6,9 +6,21 @@ import { BranchModule } from './branch/branch.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { ClientModule } from './client/client.module';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { IdentityModule } from './identity/identity.module';
+import { SaleModule } from './sale/sale.module';
 
 @Module({
   imports: [
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        timeout: +configService.get('HTTP_TIMEOUT'),
+        maxRedirects: +configService.get('HTTP_MAX_REDIRECTS'),
+      }),
+    }),
     RoleModule,
     UserModule,
     TenantModule,
@@ -16,6 +28,8 @@ import { ClientModule } from './client/client.module';
     ProductModule,
     CategoryModule,
     ClientModule,
+    IdentityModule,
+    SaleModule,
   ],
 })
 export class ModulesModule {}

@@ -9,6 +9,9 @@ export class TypeDocument {
   @Column({ nullable: false })
   name: string;
 
+  @Column({ nullable: false })
+  code: string;
+
   @Column({ nullable: false, default: true })
   isActive: boolean;
 

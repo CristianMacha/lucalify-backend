@@ -31,4 +31,11 @@ export class TypeDocumentMysqlRepository
       plainToInstance(TypeDocumentValue, typeDocument),
     );
   }
+
+  async updateTypeDocument(
+    typeDocument: TypeDocumentValue,
+  ): Promise<TypeDocumentValue | null> {
+    const typeDocumentUpdated = await this.save(typeDocument);
+    return plainToInstance(TypeDocumentValue, typeDocumentUpdated);
+  }
 }

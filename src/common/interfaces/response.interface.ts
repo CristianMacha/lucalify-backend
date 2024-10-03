@@ -5,3 +5,9 @@ export interface ResponseList<T> {
   currentPage: number;
   perPage: number;
 }
+
+export interface Response<T> {
+  data: T;
+  ok: boolean;
+  message: string;
+}

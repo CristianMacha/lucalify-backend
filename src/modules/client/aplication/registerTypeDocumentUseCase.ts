@@ -11,9 +11,9 @@ export class RegisterTypeDocumentUseCase {
   ) {}
 
   public async execute(createTypeDocument: CreateTypeDocumentDto) {
-    const { name, isActive } = createTypeDocument;
+    const { name, isActive, code } = createTypeDocument;
 
-    const newTypeDocument = new TypeDocumentValue(name, isActive);
+    const newTypeDocument = new TypeDocumentValue(name, isActive, code);
     const typeDocumentCreated =
       await this.typeDocumentRepository.register(newTypeDocument);
     return typeDocumentCreated;
