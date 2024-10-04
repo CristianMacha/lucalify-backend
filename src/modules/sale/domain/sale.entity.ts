@@ -1,8 +1,10 @@
-import { UserEntity } from '../../user/domain/user.entity';
+import { ClientEntity } from '../../client/domain/client.entity';
+import { PaymentEntity } from './payment.entity';
+import { ProductSaleEntity } from './product-sale.entity';
 
 export interface SaleEntity {
   id: string;
-  user: UserEntity | null;
+  client: ClientEntity;
   total: number;
   discount: number;
   rounding: number;
@@ -10,10 +12,12 @@ export interface SaleEntity {
   updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
+  productSales: ProductSaleEntity[];
+  payments: PaymentEntity[];
 }
 
 export interface FilterSale {
-  textSearch: string;
+  textSearch?: string;
   fromDate?: Date;
   toDate?: Date;
   page: number;
@@ -22,10 +26,14 @@ export interface FilterSale {
 
 export interface CreateSale {
   clientId?: string;
-  paymentDate: Date;
+  payments: CreatePaymentSale[];
+  products: CreateProductSale[];
+}
+
+export interface CreatePaymentSale {
   amount: number;
   note: string;
-  products: CreateProductSale[];
+  paymentDate: Date;
 }
 
 export interface CreateProductSale {

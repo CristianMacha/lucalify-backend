@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { ProductEntity } from './product.entity';
 import { CategoryValue } from '../../category/domain/category.value';
+import { ProductSaleValue } from '../../sale/domain/product-sale.value';
 
 export class ProductValue implements ProductEntity {
   id: string;
@@ -16,6 +17,7 @@ export class ProductValue implements ProductEntity {
   createdAt: Date;
   updatedAt: Date;
   category: CategoryValue;
+  productSales: ProductSaleValue[];
 
   constructor(
     name: string,

@@ -16,7 +16,7 @@ export class ClientMysqlRepository
   constructor(private readonly dataSource: DataSource) {
     super(Client, dataSource.createEntityManager());
   }
-  async findById(id: string): Promise<ClientValue> {
+  async findClientById(id: string): Promise<ClientValue> {
     return await this.findOne({ where: { id } });
   }
 

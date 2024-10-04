@@ -25,7 +25,7 @@ export class UpdateClientUseCase {
       throw new Error('Type Document not found');
     }
 
-    const client = await this.clientRepository.findById(id);
+    const client = await this.clientRepository.findClientById(id);
     if (!client) {
       throw new Error('Client not found');
     }

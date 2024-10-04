@@ -1,10 +1,12 @@
 import { v4 as uuid } from 'uuid';
-import { UserValue } from '../../user/domain/user.value';
 import { SaleEntity } from './sale.entity';
+import { ProductSaleValue } from './product-sale.value';
+import { PaymentEntity } from './payment.entity';
+import { ClientValue } from '../../client/domain/client.value';
 
 export class SaleValue implements SaleEntity {
   id: string;
-  user: UserValue | null;
+  client: ClientValue;
   total: number;
   discount: number;
   rounding: number;
@@ -12,11 +14,18 @@ export class SaleValue implements SaleEntity {
   updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
+  productSales: ProductSaleValue[];
+  payments: PaymentEntity[];
 
-  constructor(createSale: CreateSale, userId: string) {
-    const { user, total, discount, rounding } = createSale;
+  constructor(
+    client: ClientValue,
+    total: number,
+    discount: number,
+    rounding: number,
+    userId: string,
+  ) {
     this.id = uuid();
-    this.user = user;
+    this.client = client;
     this.total = total;
     this.discount = discount;
     this.rounding = rounding;
@@ -28,7 +37,7 @@ export class SaleValue implements SaleEntity {
 }
 
 export interface CreateSale {
-  user: UserValue | null;
+  client: ClientValue;
   total: number;
   discount: number;
   rounding: number;

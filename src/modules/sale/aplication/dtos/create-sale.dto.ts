@@ -1,17 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateSale } from '../../domain/sale.entity';
+import {
+  CreatePaymentSale,
+  CreateProductSale,
+  CreateSale,
+} from '../../domain/sale.entity';
 import {
   IsArray,
   IsDateString,
   IsNumber,
-  IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class CreateProductSaleDto {
+class CreatePaymentSaleDto implements CreatePaymentSale {
+  @ApiProperty()
+  @IsNumber()
+  amount: number;
+
+  @ApiProperty()
+  @IsString()
+  note: string;
+
+  @ApiProperty()
+  @IsDateString()
+  paymentDate: Date;
+}
+
+class CreateProductSaleDto implements CreateProductSale {
   @ApiProperty()
   @IsUUID()
   productId: string;
@@ -27,26 +44,18 @@ class CreateProductSaleDto {
 
 export class CreateSaleDto implements CreateSale {
   @ApiProperty({ nullable: true })
-  @IsOptional()
   @IsUUID()
-  readonly clientId?: string;
-
-  @ApiProperty()
-  @IsDateString()
-  @Type(() => Date)
-  paymentDate: Date;
-
-  @ApiProperty()
-  @IsNumber()
-  amount: number;
-
-  @ApiProperty()
-  @IsString()
-  note: string;
+  readonly clientId: string;
 
   @ApiProperty({ type: [CreateProductSaleDto] })
   @ValidateNested({ each: true })
   @Type(() => CreateProductSaleDto)
   @IsArray()
   products: CreateProductSaleDto[];
+
+  @ApiProperty({ type: [CreatePaymentSaleDto] })
+  @ValidateNested({ each: true })
+  @Type(() => CreatePaymentSaleDto)
+  @IsArray()
+  payments: CreatePaymentSaleDto[];
 }

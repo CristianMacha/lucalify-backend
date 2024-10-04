@@ -3,7 +3,7 @@ import { FilterClient } from './client.entity';
 import { ClientValue } from './client.value';
 
 export interface ClientRepository {
-  findById(id: string): Promise<ClientValue | null>;
+  findClientById(id: string): Promise<ClientValue | null>;
   register(client: ClientValue): Promise<ClientValue | null>;
   list(): Promise<ClientValue[]>;
   filteredClients(filter: FilterClient): Promise<ResponseList<ClientValue>>;

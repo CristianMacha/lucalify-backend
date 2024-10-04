@@ -1,5 +1,6 @@
+import { ProductSale } from '../../sale/infrastructure/product-sale.schema';
 import { Category } from '../../category/infrastructure/category.schema';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -44,4 +45,7 @@ export class Product {
 
   @ManyToOne(() => Category, (category) => category.products)
   category: Category;
+
+  @OneToMany(() => ProductSale, (productSale) => productSale.product)
+  productSales: ProductSale[];
 }
