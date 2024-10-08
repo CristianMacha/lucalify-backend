@@ -38,7 +38,6 @@ export class SaleMysqlRepository
       }
 
       for await (const productSale of productSales) {
-        const {} = productSale;
         const product = manager.create(Product);
         product.id = productSale.product.id;
         const newProductSale = manager.create(ProductSale);

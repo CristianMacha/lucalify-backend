@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { DataSource, Repository } from 'typeorm';
 
@@ -21,7 +21,11 @@ export class ClientMysqlRepository
   }
 
   async register(client: ClientValue): Promise<ClientValue> {
-    return await this.save(client);
+    try {
+      return await this.save(client);
+    } catch (error: any) {
+      throw new ConflictException(error.message);
+    }
   }
 
   async list(): Promise<ClientValue[]> {
