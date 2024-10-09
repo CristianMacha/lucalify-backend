@@ -17,6 +17,7 @@ import { CreateProductDto } from '../aplication/dtos/create-product.dto';
 import { AuthGuard } from '../../../common/guards/auth.guard';
 import { UpdateProductUseCase } from '../aplication/updateProductUseCase';
 import { UpdateProductDto } from '../aplication/dtos/update-product.dto';
+import { SearchProductUseCase } from '../aplication/searchProductUseCase';
 
 @ApiTags('Product')
 @ApiBearerAuth()
@@ -27,6 +28,7 @@ export class ProductController {
     private readonly filterProductUseCase: FilterProductUseCase,
     private readonly registerProductUseCase: RegisterProductUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
+    private readonly searchProductUseCase: SearchProductUseCase,
   ) {}
 
   @Put(':id')
@@ -51,5 +53,10 @@ export class ProductController {
       createProductDto,
       req.user,
     );
+  }
+
+  @Get('search')
+  async searchProduct(@Query('value') value: string) {
+    return await this.searchProductUseCase.execute(value);
   }
 }

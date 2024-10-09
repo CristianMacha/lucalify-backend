@@ -27,7 +27,7 @@ export class CreateSaleUseCase {
     const client = await this.getClientById(clientId);
     if (!client) throw new NotFoundException('Client not found');
 
-    const newSale = new SaleValue(client, 0, 0, 0, payload.id);
+    const newSale = new SaleValue(client, 0, 0, 0, payload.name);
 
     let totalSale = 0;
     for (const payment of payments) {

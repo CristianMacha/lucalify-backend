@@ -62,4 +62,14 @@ export class ProductMysqlRepository
     const productUpdated = await this.save(product);
     return plainToInstance(ProductValue, productUpdated);
   }
+
+  async searchProduct(value: string): Promise<ProductValue[]> {
+    const query = this.createQueryBuilder('product');
+    query.where(
+      'product.name LIKE :textSearch OR product.description LIKE :textSearch OR product.code LIKE :textSearch',
+      { textSearch: `%${value}%` },
+    );
+    const products = await query.getMany();
+    return products.map((product) => plainToInstance(ProductValue, product));
+  }
 }

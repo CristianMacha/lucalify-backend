@@ -11,6 +11,7 @@ import { ProductMysqlRepository } from './infrastructure/product.mysql.repositor
 import { FilterProductUseCase } from './aplication/filterProductUseCase';
 import { RegisterProductUseCase } from './aplication/registerProductUseCase';
 import { UpdateProductUseCase } from './aplication/updateProductUseCase';
+import { SearchProductUseCase } from './aplication/searchProductUseCase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
@@ -19,6 +20,7 @@ import { UpdateProductUseCase } from './aplication/updateProductUseCase';
     FilterProductUseCase,
     RegisterProductUseCase,
     UpdateProductUseCase,
+    SearchProductUseCase,
     JwtService,
     {
       provide: 'ProductRepository',

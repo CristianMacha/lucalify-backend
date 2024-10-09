@@ -9,4 +9,5 @@ export interface ProductRepository {
     filterProductDto: FilterProductDto,
   ): Promise<ResponseList<ProductValue>>;
   updateProduct(product: ProductValue): Promise<ProductValue | null>;
+  searchProduct(value: string): Promise<ProductValue[]>;
 }
