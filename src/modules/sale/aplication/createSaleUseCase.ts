@@ -39,7 +39,7 @@ export class CreateSaleUseCase {
           note: payment.note,
           paymentDate: payment.paymentDate,
         },
-        payload.id,
+        payload.name,
       );
       paymentsValue.push(newPayment);
     }
@@ -53,7 +53,7 @@ export class CreateSaleUseCase {
           quantity: productSale.quantity,
           price: productSale.price,
         },
-        payload.id,
+        payload.name,
       );
       productSales.push(newProductSale);
     }
