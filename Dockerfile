@@ -13,5 +13,7 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
+EXPOSE 3001
+
 # Comando para correr la aplicación
 CMD ["sh", "-c", "npx typeorm migration:run && npm start:prod"]
