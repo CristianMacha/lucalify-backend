@@ -32,6 +32,7 @@ export class SaleMysqlRepository
 
       const saleCreated = await manager.save(Sale, newSale);
       for await (const payment of payments) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { sale, ...onlyPayment } = payment;
         const newPayment = manager.create(Payment, onlyPayment);
         await manager.save(newPayment);
