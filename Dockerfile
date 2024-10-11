@@ -13,8 +13,5 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
-# Expone el puerto en el que la aplicación correrá
-EXPOSE 3000
-
 # Comando para correr la aplicación
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npx typeorm migration:run && npm start:prod"]
