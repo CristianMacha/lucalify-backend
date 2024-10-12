@@ -10,12 +10,10 @@ COPY package*.json ./
 # Instala las dependencias
 RUN npm install
 
-RUN npm run build
-
 # Copia el resto de la aplicación
 COPY . .
 
 EXPOSE 3001
 
 # Comando para correr la aplicación
-CMD ["npm", "run", "start:prod"]
+CMD ["sh", "-c", "npm run build && npm start:prod"]
