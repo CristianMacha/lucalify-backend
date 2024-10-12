@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 3001
 
 # Comando para correr la aplicación
-CMD ["sh", "-c", "npm run typeorm:run-migrations && npm start:prod"]
+CMD ["npm", "start:prod"]
