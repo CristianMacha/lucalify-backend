@@ -1,32 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  CreatePaymentSale,
-  CreateProductSale,
-  CreateSale,
-} from '../../domain/sale.entity';
-import {
-  IsArray,
-  IsDateString,
-  IsNumber,
-  IsString,
-  IsUUID,
-  ValidateNested,
-} from 'class-validator';
+import { CreateProductSale, CreateSale } from '../../domain/sale.entity';
+import { IsArray, IsNumber, IsUUID, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class CreatePaymentSaleDto implements CreatePaymentSale {
-  @ApiProperty()
-  @IsNumber()
-  amount: number;
+// class CreatePaymentSaleDto implements CreatePaymentSale {
+//   @ApiProperty()
+//   @IsUUID()
+//   id: string;
 
-  @ApiProperty()
-  @IsString()
-  note: string;
+//   @ApiProperty()
+//   @IsNumber()
+//   amount: number;
 
-  @ApiProperty()
-  @IsDateString()
-  paymentDate: Date;
-}
+//   @ApiProperty()
+//   @IsString()
+//   note: string;
+
+//   @ApiProperty()
+//   @IsDateString()
+//   paymentDate: Date;
+// }
 
 class CreateProductSaleDto implements CreateProductSale {
   @ApiProperty()
@@ -36,16 +29,12 @@ class CreateProductSaleDto implements CreateProductSale {
   @ApiProperty()
   @IsNumber()
   quantity: number;
-
-  @ApiProperty()
-  @IsNumber()
-  price: number;
 }
 
 export class CreateSaleDto implements CreateSale {
-  @ApiProperty({ nullable: true })
-  @IsUUID()
-  readonly clientId: string;
+  // @ApiProperty({ nullable: true })
+  // @IsUUID()
+  // readonly clientId: string;
 
   @ApiProperty({ type: [CreateProductSaleDto] })
   @ValidateNested({ each: true })
@@ -53,9 +42,9 @@ export class CreateSaleDto implements CreateSale {
   @IsArray()
   products: CreateProductSaleDto[];
 
-  @ApiProperty({ type: [CreatePaymentSaleDto] })
-  @ValidateNested({ each: true })
-  @Type(() => CreatePaymentSaleDto)
-  @IsArray()
-  payments: CreatePaymentSaleDto[];
+  // @ApiProperty({ type: [CreatePaymentSaleDto] })
+  // @ValidateNested({ each: true })
+  // @Type(() => CreatePaymentSaleDto)
+  // @IsArray()
+  // payments: CreatePaymentSaleDto[];
 }

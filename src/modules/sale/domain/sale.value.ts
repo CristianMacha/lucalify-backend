@@ -18,14 +18,12 @@ export class SaleValue implements SaleEntity {
   payments: PaymentEntity[];
 
   constructor(
-    client: ClientValue,
     total: number,
     discount: number,
     rounding: number,
     userId: string,
   ) {
     this.id = uuid();
-    this.client = client;
     this.total = total;
     this.discount = discount;
     this.rounding = rounding;

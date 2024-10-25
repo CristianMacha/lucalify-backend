@@ -6,8 +6,6 @@ import { FilterSale } from '../domain/sale.entity';
 import { SaleValue } from '../domain/sale.value';
 import { ResponseList } from '../../../common/interfaces/response.interface';
 import { plainToInstance } from 'class-transformer';
-import { Client } from '../../client/infrastructure/client.schema';
-import { Payment } from './payment.schema';
 import { ProductSale } from './product-sale.schema';
 import { Product } from 'src/modules/product/infrastructure/product.schema';
 
@@ -22,21 +20,16 @@ export class SaleMysqlRepository
 
   async createSale(sale: SaleValue): Promise<SaleValue | null> {
     return await this.dataSource.transaction(async (manager) => {
-      const { client, productSales, payments, ...onlySale } = sale;
+      const { productSales, ...onlySale } = sale;
       const newSale = manager.create(Sale, onlySale);
-      if (sale.client) {
-        const clientFormat = manager.create(Client);
-        clientFormat.id = client.id;
-        newSale.client = clientFormat;
-      }
 
       const saleCreated = await manager.save(Sale, newSale);
-      for await (const payment of payments) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { sale, ...onlyPayment } = payment;
-        const newPayment = manager.create(Payment, onlyPayment);
-        await manager.save(newPayment);
-      }
+      // for await (const payment of payments) {
+      //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      //   const { sale, ...onlyPayment } = payment;
+      //   const newPayment = manager.create(Payment, onlyPayment);
+      //   await manager.save(newPayment);
+      // }
 
       for await (const productSale of productSales) {
         const product = manager.create(Product);
@@ -64,9 +57,10 @@ export class SaleMysqlRepository
   ): Promise<ResponseList<SaleValue>> {
     const { textSearch, page, perPage, fromDate, toDate } = filterSale;
     const query = this.createQueryBuilder('sale');
-    query.innerJoinAndSelect('sale.client', 'client');
+    query.where('sale.total > 0');
+    // query.innerJoinAndSelect('sale.client', 'client');
     if (textSearch) {
-      query.where(
+      query.andWhere(
         'client.name LIKE :textSearch OR client.documentNumber LIKE :textSearch',
         { textSearch: `%${textSearch}%` },
       );

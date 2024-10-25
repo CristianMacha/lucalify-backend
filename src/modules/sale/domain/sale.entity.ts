@@ -25,12 +25,13 @@ export interface FilterSale {
 }
 
 export interface CreateSale {
-  clientId?: string;
-  payments: CreatePaymentSale[];
+  // clientId?: string;
+  // payments: CreatePaymentSale[];
   products: CreateProductSale[];
 }
 
 export interface CreatePaymentSale {
+  id: string;
   amount: number;
   note: string;
   paymentDate: Date;
@@ -39,5 +40,4 @@ export interface CreatePaymentSale {
 export interface CreateProductSale {
   productId: string;
   quantity: number;
-  price: number;
 }

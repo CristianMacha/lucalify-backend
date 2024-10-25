@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { PaymentEntity } from './payment.entity';
 import { SaleValue } from './sale.value';
 
@@ -14,8 +13,8 @@ export class PaymentValue implements PaymentEntity {
   updatedAt: Date;
 
   constructor(createPayment: CreatePayment, userId: string) {
-    const { sale, amount, note, paymentDate } = createPayment;
-    this.id = uuid();
+    const { sale, amount, note, paymentDate, id } = createPayment;
+    this.id = id;
     this.sale = sale;
     this.amount = amount;
     this.note = note;
@@ -28,6 +27,7 @@ export class PaymentValue implements PaymentEntity {
 }
 
 export interface CreatePayment {
+  id: string;
   sale: SaleValue;
   amount: number;
   note: string;
