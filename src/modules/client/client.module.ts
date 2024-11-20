@@ -14,6 +14,7 @@ import { TypeDocumentMysqlRepository } from './infrastructure/type-document.mysq
 import { ListTypeDocumentUseCase } from './aplication/listTypeDocumentUseCase';
 import { UpdateClientUseCase } from './aplication/updateClientUseCase';
 import { UpdateTypeDocumentUseCase } from './aplication/updateTypeDocumentUseCase';
+import { SearchClientUseCase } from './aplication/searchClientUseCase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Client, TypeDocument])],
@@ -26,6 +27,7 @@ import { UpdateTypeDocumentUseCase } from './aplication/updateTypeDocumentUseCas
     ListTypeDocumentUseCase,
     UpdateTypeDocumentUseCase,
     UpdateClientUseCase,
+    SearchClientUseCase,
     {
       provide: 'ClientRepository',
       useClass: ClientMysqlRepository,

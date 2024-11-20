@@ -7,7 +7,8 @@ import { SaleValue } from '../domain/sale.value';
 import { ResponseList } from '../../../common/interfaces/response.interface';
 import { plainToInstance } from 'class-transformer';
 import { ProductSale } from './product-sale.schema';
-import { Product } from 'src/modules/product/infrastructure/product.schema';
+import { Product } from '../../product/infrastructure/product.schema';
+import { Client } from '../../client/infrastructure/client.schema';
 
 @Injectable()
 export class SaleMysqlRepository
@@ -20,8 +21,11 @@ export class SaleMysqlRepository
 
   async createSale(sale: SaleValue): Promise<SaleValue | null> {
     return await this.dataSource.transaction(async (manager) => {
-      const { productSales, ...onlySale } = sale;
+      const { productSales, client, ...onlySale } = sale;
       const newSale = manager.create(Sale, onlySale);
+      if (client) {
+        newSale.client = plainToInstance(Client, client);
+      }
 
       const saleCreated = await manager.save(Sale, newSale);
       // for await (const payment of payments) {
@@ -32,8 +36,8 @@ export class SaleMysqlRepository
       // }
 
       for await (const productSale of productSales) {
-        const product = manager.create(Product);
-        product.id = productSale.product.id;
+        const product = plainToInstance(Product, productSale.product);
+        product.stock -= productSale.quantity;
         const newProductSale = manager.create(ProductSale);
         newProductSale.id = productSale.id;
         newProductSale.sale = saleCreated;
@@ -46,6 +50,7 @@ export class SaleMysqlRepository
         newProductSale.createdAt = productSale.createdAt;
         newProductSale.updatedAt = productSale.updatedAt;
         await manager.save(newProductSale);
+        await manager.save(product);
       }
 
       return saleCreated;
@@ -57,6 +62,7 @@ export class SaleMysqlRepository
   ): Promise<ResponseList<SaleValue>> {
     const { textSearch, page, perPage, fromDate, toDate } = filterSale;
     const query = this.createQueryBuilder('sale');
+    query.leftJoinAndSelect('sale.client', 'client');
     query.where('sale.total > 0');
     // query.innerJoinAndSelect('sale.client', 'client');
     if (textSearch) {

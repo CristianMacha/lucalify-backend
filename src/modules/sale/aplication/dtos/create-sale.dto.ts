@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateProductSale, CreateSale } from '../../domain/sale.entity';
-import { IsArray, IsNumber, IsUUID, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 // class CreatePaymentSaleDto implements CreatePaymentSale {
@@ -32,9 +38,10 @@ class CreateProductSaleDto implements CreateProductSale {
 }
 
 export class CreateSaleDto implements CreateSale {
-  // @ApiProperty({ nullable: true })
-  // @IsUUID()
-  // readonly clientId: string;
+  @ApiProperty({ nullable: true })
+  @IsUUID()
+  @IsOptional()
+  readonly clientId?: string;
 
   @ApiProperty({ type: [CreateProductSaleDto] })
   @ValidateNested({ each: true })

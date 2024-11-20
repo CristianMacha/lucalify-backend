@@ -4,7 +4,7 @@ import { ProductSaleEntity } from './product-sale.entity';
 
 export interface SaleEntity {
   id: string;
-  client: ClientEntity;
+  client?: ClientEntity;
   total: number;
   discount: number;
   rounding: number;

@@ -30,7 +30,7 @@ export class Sale {
   updatedAt: Date;
 
   @ManyToOne(() => Client, (client) => client.sales, { nullable: true })
-  client: Client;
+  client?: Client;
 
   @OneToMany(() => Payment, (payment) => payment.sale)
   payments: Payment[];

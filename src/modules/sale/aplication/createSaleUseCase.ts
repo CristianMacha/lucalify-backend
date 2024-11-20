@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { SaleRepository } from '../domain/sale.repository';
 import { CreateSaleDto } from './dtos/create-sale.dto';
 import { Payload } from '../../../common/interfaces/auth.interface';
@@ -19,14 +19,16 @@ export class CreateSaleUseCase {
   ) {}
 
   public async execute(createSaleDto: CreateSaleDto, payload: Payload) {
-    const { products } = createSaleDto;
+    const { products, clientId } = createSaleDto;
     // const paymentsValue: PaymentValue[] = [];
     const productSales: ProductSaleValue[] = [];
 
-    // const client = await this.getClientById(clientId);
-    // if (!client) throw new NotFoundException('Client not found');
-
     const newSale = new SaleValue(0, 0, 0, payload.name);
+    if (clientId) {
+      const client = await this.getClientById(clientId);
+      if (!client) throw new NotFoundException('Client not found');
+      newSale.client = client;
+    }
 
     // for (const payment of payments) {
     //   totalSale += payment.amount;
@@ -43,7 +45,6 @@ export class CreateSaleUseCase {
     //   paymentsValue.push(newPayment);
     // }
     // newSale.payments = paymentsValue;
-
     let totalSale = 0;
     for await (const productSale of products) {
       const product = await this.getProductById(productSale.productId);
@@ -60,6 +61,7 @@ export class CreateSaleUseCase {
       productSales.push(newProductSale);
       totalSale += totalPrice;
     }
+
     newSale.productSales = productSales;
     newSale.total = totalSale;
     return await this.saleRepository.createSale(newSale);

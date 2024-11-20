@@ -6,7 +6,7 @@ import { ClientValue } from '../../client/domain/client.value';
 
 export class SaleValue implements SaleEntity {
   id: string;
-  client: ClientValue;
+  client?: ClientValue;
   total: number;
   discount: number;
   rounding: number;
@@ -35,7 +35,7 @@ export class SaleValue implements SaleEntity {
 }
 
 export interface CreateSale {
-  client: ClientValue;
+  client?: ClientValue;
   total: number;
   discount: number;
   rounding: number;

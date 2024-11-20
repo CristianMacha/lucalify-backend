@@ -17,6 +17,7 @@ import { FilteredClientsUseCase } from '../aplication/filteredClientsUseCase';
 import { CreateClientDto } from '../aplication/dto/create-client.dto';
 import { UpdateClientUseCase } from '../aplication/updateClientUseCase';
 import { UpdateClientDto } from '../aplication/dto/update-client.dto';
+import { SearchClientUseCase } from '../aplication/searchClientUseCase';
 
 @ApiBearerAuth()
 @ApiTags('client')
@@ -27,6 +28,7 @@ export class ClientController {
     private readonly registerClientUseCase: RegisterClientUseCase,
     private readonly filteredClientsUseCase: FilteredClientsUseCase,
     private readonly updateClientUseCase: UpdateClientUseCase,
+    private readonly searchClientUseCase: SearchClientUseCase,
   ) {}
 
   @Get('filter')
@@ -50,5 +52,10 @@ export class ClientController {
       updateClientDto,
       req.user,
     );
+  }
+
+  @Get('search')
+  async search(@Query('value') value: string) {
+    return await this.searchClientUseCase.execute(value);
   }
 }

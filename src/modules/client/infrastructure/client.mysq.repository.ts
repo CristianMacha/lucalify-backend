@@ -65,4 +65,16 @@ export class ClientMysqlRepository
     const clientUpdated = await this.save(client);
     return plainToInstance(ClientValue, clientUpdated);
   }
+
+  async searchClient(value: string): Promise<ClientValue[]> {
+    const query = this.createQueryBuilder('client');
+
+    query.where(
+      'client.name LIKE :textSearch OR client.documentNumber LIKE :textSearch OR client.email LIKE :textSearch',
+      { textSearch: `%${value}%` },
+    );
+
+    const clients = await query.getMany();
+    return clients.map((client) => plainToInstance(ClientValue, client));
+  }
 }
