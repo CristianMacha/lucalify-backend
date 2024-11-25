@@ -1,12 +1,12 @@
 import { v4 as uuid } from 'uuid';
-import { ProductSaleEntity } from './product-sale.entity';
 import { ProductValue } from '../../product/domain/product.value';
-import { SaleValue } from './sale.value';
+import { TradeValue } from './trade.value';
+import { ProductTradeEntity } from './product-trade.entity';
 
-export class ProductSaleValue implements ProductSaleEntity {
+export class ProductTradeValue implements ProductTradeEntity {
   id: string;
   product: ProductValue;
-  sale: SaleValue;
+  trade: TradeValue;
   price: number;
   quantity: number;
   createdBy: string;
@@ -14,11 +14,11 @@ export class ProductSaleValue implements ProductSaleEntity {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(createProductSale: CreateProductSale, userId: string) {
-    const { product, sale, price, quantity } = createProductSale;
+  constructor(createProductTrade: CreateProductTrade, userId: string) {
+    const { product, trade, price, quantity } = createProductTrade;
     this.id = uuid();
     this.product = product;
-    this.sale = sale;
+    this.trade = trade;
     this.price = price;
     this.quantity = quantity;
     this.createdBy = userId;
@@ -28,9 +28,9 @@ export class ProductSaleValue implements ProductSaleEntity {
   }
 }
 
-export interface CreateProductSale {
+export interface CreateProductTrade {
   product: ProductValue;
-  sale: SaleValue;
+  trade: TradeValue;
   price: number;
   quantity: number;
 }

@@ -9,7 +9,7 @@ import { ClientModule } from './client/client.module';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IdentityModule } from './identity/identity.module';
-import { SaleModule } from './sale/sale.module';
+import { TradeModule } from './trade/trade.module';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { SaleModule } from './sale/sale.module';
     CategoryModule,
     ClientModule,
     IdentityModule,
-    SaleModule,
+    TradeModule,
   ],
 })
 export class ModulesModule {}

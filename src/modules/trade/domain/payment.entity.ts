@@ -1,8 +1,8 @@
-import { SaleEntity } from './sale.entity';
+import { TradeEntity } from './trade.entity';
 
 export interface PaymentEntity {
   id: string;
-  sale: SaleEntity;
+  trade: TradeEntity;
   amount: number;
   note: string;
   paymentDate: Date;

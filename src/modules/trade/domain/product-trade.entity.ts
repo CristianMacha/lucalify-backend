@@ -1,10 +1,10 @@
 import { ProductEntity } from '../../product/domain/product.entity';
-import { SaleEntity } from './sale.entity';
+import { TradeEntity } from './trade.entity';
 
-export interface ProductSaleEntity {
+export interface ProductTradeEntity {
   id: string;
   product: ProductEntity;
-  sale: SaleEntity;
+  trade: TradeEntity;
   quantity: number;
   price: number;
   createdBy: string;

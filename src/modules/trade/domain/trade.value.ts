@@ -1,20 +1,21 @@
 import { v4 as uuid } from 'uuid';
-import { SaleEntity } from './sale.entity';
-import { ProductSaleValue } from './product-sale.value';
 import { PaymentEntity } from './payment.entity';
 import { ClientValue } from '../../client/domain/client.value';
+import { ProductTradeValue } from './product-trade.value';
+import { TradeEntity, TradeType } from './trade.entity';
 
-export class SaleValue implements SaleEntity {
+export class TradeValue implements TradeEntity {
   id: string;
   client?: ClientValue;
   total: number;
   discount: number;
+  type: TradeType;
   rounding: number;
   createdBy: string;
   updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
-  productSales: ProductSaleValue[];
+  productTrades: ProductTradeValue[];
   payments: PaymentEntity[];
 
   constructor(
@@ -22,10 +23,12 @@ export class SaleValue implements SaleEntity {
     discount: number,
     rounding: number,
     userId: string,
+    type: TradeType = TradeType.SALE,
   ) {
     this.id = uuid();
     this.total = total;
     this.discount = discount;
+    this.type = type;
     this.rounding = rounding;
     this.createdBy = userId;
     this.updatedBy = userId;
@@ -34,7 +37,7 @@ export class SaleValue implements SaleEntity {
   }
 }
 
-export interface CreateSale {
+export interface CreateTrade {
   client?: ClientValue;
   total: number;
   discount: number;

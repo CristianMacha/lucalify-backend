@@ -1,43 +1,51 @@
 import { ClientEntity } from '../../client/domain/client.entity';
 import { PaymentEntity } from './payment.entity';
-import { ProductSaleEntity } from './product-sale.entity';
+import { ProductTradeEntity } from './product-trade.entity';
 
-export interface SaleEntity {
+export enum TradeType {
+  SALE = 'sale',
+  PURCHASE = 'purchase',
+}
+
+export interface TradeEntity {
   id: string;
   client?: ClientEntity;
   total: number;
   discount: number;
+  type: TradeType;
   rounding: number;
   createdBy: string;
   updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
-  productSales: ProductSaleEntity[];
+  productTrades: ProductTradeEntity[];
   payments: PaymentEntity[];
 }
 
-export interface FilterSale {
+export interface FilterTrade {
   textSearch?: string;
   fromDate?: Date;
   toDate?: Date;
   page: number;
   perPage: number;
+  type: TradeType;
 }
 
-export interface CreateSale {
-  // clientId?: string;
+export interface CreateTrade {
+  clientId?: string;
   // payments: CreatePaymentSale[];
-  products: CreateProductSale[];
+  products: CreateProductTrade[];
+  type: TradeType;
 }
 
-export interface CreatePaymentSale {
+export interface CreatePaymentTrade {
   id: string;
   amount: number;
   note: string;
   paymentDate: Date;
 }
 
-export interface CreateProductSale {
+export interface CreateProductTrade {
   productId: string;
   quantity: number;
 }

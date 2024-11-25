@@ -1,5 +1,5 @@
+import { ProductTradeEntity } from '../../trade/domain/product-trade.entity';
 import { CategoryEntity } from '../../category/domain/category.entity';
-import { ProductSaleEntity } from '../../sale/domain/product-sale.entity';
 
 export interface ProductEntity {
   id: string;
@@ -14,5 +14,5 @@ export interface ProductEntity {
   createdAt: Date;
   updatedAt: Date;
   category: CategoryEntity;
-  productSales: ProductSaleEntity[];
+  productTrades: ProductTradeEntity[];
 }

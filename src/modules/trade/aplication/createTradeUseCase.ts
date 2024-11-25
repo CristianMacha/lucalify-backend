@@ -1,33 +1,33 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { SaleRepository } from '../domain/sale.repository';
-import { CreateSaleDto } from './dtos/create-sale.dto';
 import { Payload } from '../../../common/interfaces/auth.interface';
 import { ProductRepository } from '../../product/domain/product.repository';
-import { SaleValue } from '../domain/sale.value';
-import { ProductSaleValue } from '../domain/product-sale.value';
 import { ClientRepository } from '../../client/domain/client.repository';
+import { ProductTradeValue } from '../domain/product-trade.value';
+import { TradeValue } from '../domain/trade.value';
+import { TradeRepository } from '../domain/trade.repository';
+import { CreateTradeDto } from './dtos/create-trade.dto';
 
 @Injectable()
-export class CreateSaleUseCase {
+export class CreateTradeUseCase {
   constructor(
-    @Inject('SaleRepository')
-    private readonly saleRepository: SaleRepository,
+    @Inject('TradeRepository')
+    private readonly tradeRepository: TradeRepository,
     @Inject('ProductRepository')
     private readonly productRepository: ProductRepository,
     @Inject('ClientRepository')
     private readonly clientRepository: ClientRepository,
   ) {}
 
-  public async execute(createSaleDto: CreateSaleDto, payload: Payload) {
-    const { products, clientId } = createSaleDto;
+  public async execute(createTradeDto: CreateTradeDto, payload: Payload) {
+    const { products, clientId, type } = createTradeDto;
     // const paymentsValue: PaymentValue[] = [];
-    const productSales: ProductSaleValue[] = [];
+    const productTrades: ProductTradeValue[] = [];
 
-    const newSale = new SaleValue(0, 0, 0, payload.name);
+    const newTrade = new TradeValue(0, 0, 0, payload.name, type);
     if (clientId) {
       const client = await this.getClientById(clientId);
       if (!client) throw new NotFoundException('Client not found');
-      newSale.client = client;
+      newTrade.client = client;
     }
 
     // for (const payment of payments) {
@@ -45,26 +45,26 @@ export class CreateSaleUseCase {
     //   paymentsValue.push(newPayment);
     // }
     // newSale.payments = paymentsValue;
-    let totalSale = 0;
-    for await (const productSale of products) {
-      const product = await this.getProductById(productSale.productId);
-      const totalPrice = product.price * productSale.quantity;
-      const newProductSale = new ProductSaleValue(
+    let totalTrade = 0;
+    for await (const productTrade of products) {
+      const product = await this.getProductById(productTrade.productId);
+      const totalPrice = product.price * productTrade.quantity;
+      const newProductTrade = new ProductTradeValue(
         {
           product,
-          sale: newSale,
-          quantity: productSale.quantity,
+          trade: newTrade,
+          quantity: productTrade.quantity,
           price: totalPrice,
         },
         payload.name,
       );
-      productSales.push(newProductSale);
-      totalSale += totalPrice;
+      productTrades.push(newProductTrade);
+      totalTrade += totalPrice;
     }
 
-    newSale.productSales = productSales;
-    newSale.total = totalSale;
-    return await this.saleRepository.createSale(newSale);
+    newTrade.productTrades = productTrades;
+    newTrade.total = totalTrade;
+    return await this.tradeRepository.createTrade(newTrade);
   }
 
   private async getClientById(clientId: string) {

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { TypeDocument } from './type-document.schema';
-import { Sale } from '../../sale/infrastructure/sale.schema';
+import { Trade } from '../../trade/infrastructure/trade.schema';
 
 @Entity({ name: 'clients' })
 export class Client {
@@ -37,6 +37,6 @@ export class Client {
   @ManyToOne(() => TypeDocument, (typeDocument) => typeDocument.clients)
   typeDocument: TypeDocument;
 
-  @OneToMany(() => Sale, (sale) => sale.client)
-  sales: Sale[];
+  @OneToMany(() => Trade, (trade) => trade.client)
+  trades: Trade[];
 }

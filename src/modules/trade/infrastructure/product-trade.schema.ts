@@ -1,9 +1,9 @@
 import { Product } from '../../product/infrastructure/product.schema';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Sale } from './sale.schema';
+import { Trade } from './trade.schema';
 
-@Entity({ name: 'product_sales' })
-export class ProductSale {
+@Entity({ name: 'product_trades' })
+export class ProductTrade {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -25,9 +25,9 @@ export class ProductSale {
   @Column({ type: 'timestamp', nullable: false })
   updatedAt: Date;
 
-  @ManyToOne(() => Product, (product) => product.productSales)
+  @ManyToOne(() => Product, (product) => product.productTrades)
   product: Product;
 
-  @ManyToOne(() => Sale, (sale) => sale.productSales)
-  sale: Sale;
+  @ManyToOne(() => Trade, (trade) => trade.productTrades)
+  trade: Trade;
 }

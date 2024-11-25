@@ -15,7 +15,7 @@ export class RegisterProductUseCase {
   ) {}
 
   public async execute(createProductDto: CreateProductDto, payload: Payload) {
-    const { name, description, price, stock, code, categoryId } =
+    const { name, description, price, stock, code, categoryId, pricePurchase } =
       createProductDto;
     const category = await this.getCategoryById(categoryId);
     if (!category) {
@@ -26,6 +26,7 @@ export class RegisterProductUseCase {
       name,
       description,
       price,
+      pricePurchase,
       code,
       stock,
       category,

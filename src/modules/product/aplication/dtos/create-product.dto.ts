@@ -20,6 +20,11 @@ export class CreateProductDto {
   @ApiProperty()
   @IsNumber()
   @Type(() => Number)
+  readonly pricePurchase: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
   readonly stock: number;
 
   @ApiProperty()

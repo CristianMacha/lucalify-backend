@@ -18,7 +18,8 @@ export class UpdateProductUseCase {
       throw new Error('Product not found');
     }
 
-    const { name, description, price, code, categoryId } = updateProductDto;
+    const { name, description, price, code, categoryId, pricePurchase } =
+      updateProductDto;
     const category = await this.categoryRepository.findCategoryById(categoryId);
     if (!category) {
       throw new Error('Category not found');
@@ -29,6 +30,7 @@ export class UpdateProductUseCase {
     product.name = name;
     product.description = description;
     product.price = price;
+    product.pricePurchase = pricePurchase;
     product.code = code;
     product.category = category;
 

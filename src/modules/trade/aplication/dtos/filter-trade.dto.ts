@@ -1,9 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { FilterSale } from '../../domain/sale.entity';
-import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { FilterTrade, TradeType } from '../../domain/trade.entity';
 
-export class FilterSaleDto implements FilterSale {
+export class FilterTradeDto implements FilterTrade {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
@@ -28,4 +35,9 @@ export class FilterSaleDto implements FilterSale {
   @IsDateString()
   @IsOptional()
   toDate?: Date;
+
+  @ApiProperty()
+  @IsEnum(TradeType)
+  @IsNotEmpty()
+  type: TradeType;
 }

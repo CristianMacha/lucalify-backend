@@ -7,5 +7,5 @@ export interface PaymentRepository {
   listFilteredPayment(
     filterPayment: FilterPayment,
   ): Promise<ResponseList<PaymentValue>>;
-  findPaymentBySaleId(saleId: string): Promise<PaymentValue[]>;
+  findPaymentByTradeId(tradeId: string): Promise<PaymentValue[]>;
 }

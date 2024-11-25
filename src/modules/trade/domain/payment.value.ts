@@ -1,9 +1,9 @@
 import { PaymentEntity } from './payment.entity';
-import { SaleValue } from './sale.value';
+import { TradeValue } from './trade.value';
 
 export class PaymentValue implements PaymentEntity {
   id: string;
-  sale: SaleValue;
+  trade: TradeValue;
   amount: number;
   note: string;
   paymentDate: Date;
@@ -13,9 +13,9 @@ export class PaymentValue implements PaymentEntity {
   updatedAt: Date;
 
   constructor(createPayment: CreatePayment, userId: string) {
-    const { sale, amount, note, paymentDate, id } = createPayment;
+    const { trade, amount, note, paymentDate, id } = createPayment;
     this.id = id;
-    this.sale = sale;
+    this.trade = trade;
     this.amount = amount;
     this.note = note;
     this.paymentDate = paymentDate;
@@ -28,7 +28,7 @@ export class PaymentValue implements PaymentEntity {
 
 export interface CreatePayment {
   id: string;
-  sale: SaleValue;
+  trade: TradeValue;
   amount: number;
   note: string;
   paymentDate: Date;

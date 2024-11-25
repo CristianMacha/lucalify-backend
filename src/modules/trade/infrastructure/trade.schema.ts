@@ -1,10 +1,15 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { Payment } from './payment.schema';
-import { ProductSale } from './product-sale.schema';
+import { ProductTrade } from './product-trade.schema';
 import { Client } from '../../client/infrastructure/client.schema';
 
-@Entity({ name: 'sales' })
-export class Sale {
+enum TradeType {
+  SALE = 'sale',
+  PURCHASE = 'purchase',
+}
+
+@Entity({ name: 'trades' })
+export class Trade {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -13,6 +18,14 @@ export class Sale {
 
   @Column({ nullable: true })
   discount: number;
+
+  @Column({
+    type: 'enum',
+    enum: TradeType,
+    nullable: false,
+    default: TradeType.SALE,
+  })
+  type: TradeType;
 
   @Column({ nullable: true })
   rounding: number;
@@ -29,12 +42,12 @@ export class Sale {
   @Column({ type: 'timestamp', nullable: false })
   updatedAt: Date;
 
-  @ManyToOne(() => Client, (client) => client.sales, { nullable: true })
+  @ManyToOne(() => Client, (client) => client.trades, { nullable: true })
   client?: Client;
 
-  @OneToMany(() => Payment, (payment) => payment.sale)
+  @OneToMany(() => Payment, (payment) => payment.trade)
   payments: Payment[];
 
-  @OneToMany(() => ProductSale, (productSale) => productSale.sale)
-  productSales: ProductSale[];
+  @OneToMany(() => ProductTrade, (productTrade) => productTrade.trade)
+  productTrades: ProductTrade[];
 }

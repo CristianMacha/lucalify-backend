@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Sale } from './sale.schema';
+import { Trade } from './trade.schema';
 
 @Entity({ name: 'payments' })
 export class Payment {
@@ -27,6 +27,6 @@ export class Payment {
   @Column({ type: 'timestamp', nullable: false })
   updatedAt: Date;
 
-  @ManyToOne(() => Sale, (sale) => sale.payments)
-  sale: Sale;
+  @ManyToOne(() => Trade, (trade) => trade.payments)
+  trade: Trade;
 }
