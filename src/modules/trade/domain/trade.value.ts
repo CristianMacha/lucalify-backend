@@ -43,3 +43,9 @@ export interface CreateTrade {
   discount: number;
   rounding: number;
 }
+
+export interface FilterTradeReport {
+  startDate: Date;
+  endDate: Date;
+  tradeType: TradeType;
+}

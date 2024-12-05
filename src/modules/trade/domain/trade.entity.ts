@@ -34,7 +34,7 @@ export interface FilterTrade {
 export interface CreateTrade {
   clientId?: string;
   // payments: CreatePaymentSale[];
-  products: CreateProductTrade[];
+  productTrades: CreateProductTrade[];
   type: TradeType;
 }
 

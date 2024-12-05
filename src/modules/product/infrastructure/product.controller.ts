@@ -18,6 +18,8 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { UpdateProductUseCase } from '../aplication/updateProductUseCase';
 import { UpdateProductDto } from '../aplication/dtos/update-product.dto';
 import { SearchProductUseCase } from '../aplication/searchProductUseCase';
+import { KardexUseCase } from '../aplication/kardexUseCase';
+import { KardexFilterDto } from '../aplication/dtos/kardex-filter.dto';
 
 @ApiTags('Product')
 @ApiBearerAuth()
@@ -29,6 +31,7 @@ export class ProductController {
     private readonly registerProductUseCase: RegisterProductUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly searchProductUseCase: SearchProductUseCase,
+    private readonly kardexUseCase: KardexUseCase,
   ) {}
 
   @Put(':id')
@@ -58,5 +61,10 @@ export class ProductController {
   @Get('search')
   async searchProduct(@Query('value') value: string) {
     return await this.searchProductUseCase.execute(value);
+  }
+
+  @Get('kardex')
+  async getKardex(@Query() kardexFilter: KardexFilterDto) {
+    return await this.kardexUseCase.execute(kardexFilter);
   }
 }

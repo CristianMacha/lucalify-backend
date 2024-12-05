@@ -19,7 +19,7 @@ export class CreateTradeUseCase {
   ) {}
 
   public async execute(createTradeDto: CreateTradeDto, payload: Payload) {
-    const { products, clientId, type } = createTradeDto;
+    const { productTrades: productTradesDto, clientId, type } = createTradeDto;
     // const paymentsValue: PaymentValue[] = [];
     const productTrades: ProductTradeValue[] = [];
 
@@ -46,17 +46,15 @@ export class CreateTradeUseCase {
     // }
     // newSale.payments = paymentsValue;
     let totalTrade = 0;
-    for await (const productTrade of products) {
+    for await (const productTrade of productTradesDto) {
       const product = await this.getProductById(productTrade.productId);
-      const totalPrice = product.price * productTrade.quantity;
+      const totalPrice = productTrade.price * productTrade.quantity;
       const newProductTrade = new ProductTradeValue(
-        {
-          product,
-          trade: newTrade,
-          quantity: productTrade.quantity,
-          price: totalPrice,
-        },
         payload.name,
+        product,
+        newTrade,
+        productTrade.price,
+        productTrade.quantity,
       );
       productTrades.push(newProductTrade);
       totalTrade += totalPrice;

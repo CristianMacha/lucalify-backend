@@ -46,3 +46,17 @@ export class ProductValue implements ProductEntity {
     this.category = category;
   }
 }
+
+export interface KardexFilter {
+  productCode?: string;
+  startDate: Date;
+  endDate: Date;
+}
+
+export class KardexResult {
+  productCode: string;
+  productName: string;
+  salesCount: number;
+  purchaseCount: number;
+  totalStock: number;
+}

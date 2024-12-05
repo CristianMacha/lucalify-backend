@@ -12,6 +12,7 @@ import { FilterProductUseCase } from './aplication/filterProductUseCase';
 import { RegisterProductUseCase } from './aplication/registerProductUseCase';
 import { UpdateProductUseCase } from './aplication/updateProductUseCase';
 import { SearchProductUseCase } from './aplication/searchProductUseCase';
+import { KardexUseCase } from './aplication/kardexUseCase';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product])],
@@ -21,6 +22,7 @@ import { SearchProductUseCase } from './aplication/searchProductUseCase';
     RegisterProductUseCase,
     UpdateProductUseCase,
     SearchProductUseCase,
+    KardexUseCase,
     JwtService,
     {
       provide: 'ProductRepository',

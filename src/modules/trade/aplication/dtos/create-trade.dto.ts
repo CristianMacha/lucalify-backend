@@ -23,6 +23,11 @@ class CreateProductTradeDto implements CreateProductTrade {
   @ApiProperty()
   @IsNumber()
   quantity: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @Type(() => Number)
+  price: number;
 }
 
 export class CreateTradeDto implements CreateTrade {
@@ -35,7 +40,7 @@ export class CreateTradeDto implements CreateTrade {
   @ValidateNested({ each: true })
   @Type(() => CreateProductTradeDto)
   @IsArray()
-  products: CreateProductTradeDto[];
+  productTrades: CreateProductTradeDto[];
 
   @ApiProperty()
   @IsEnum(TradeType)

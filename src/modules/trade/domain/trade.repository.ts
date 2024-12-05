@@ -1,6 +1,6 @@
 import { ResponseList } from '../../../common/interfaces/response.interface';
 import { FilterTrade } from './trade.entity';
-import { TradeValue } from './trade.value';
+import { FilterTradeReport, TradeValue } from './trade.value';
 
 export interface TradeRepository {
   createTrade(trade: TradeValue): Promise<TradeValue | null>;
@@ -8,4 +8,6 @@ export interface TradeRepository {
     filterTrade: FilterTrade,
   ): Promise<ResponseList<TradeValue>>;
   findTradeById(id: string): Promise<TradeValue | null>;
+  findByRangeDate(filterTradeReport: FilterTradeReport): Promise<TradeValue[]>;
+  findByIdForTicket(id: string): Promise<TradeValue | null>;
 }

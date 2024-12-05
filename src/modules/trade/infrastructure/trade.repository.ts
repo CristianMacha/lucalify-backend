@@ -7,8 +7,9 @@ import { Product } from '../../product/infrastructure/product.schema';
 import { Client } from '../../client/infrastructure/client.schema';
 import { ProductTrade } from './product-trade.schema';
 import { TradeRepository } from '../domain/trade.repository';
-import { TradeValue } from '../domain/trade.value';
+import { FilterTradeReport, TradeValue } from '../domain/trade.value';
 import { FilterTrade, TradeType } from '../domain/trade.entity';
+import { add } from 'date-fns';
 
 @Injectable()
 export class TradeMysqlRepository
@@ -100,7 +101,34 @@ export class TradeMysqlRepository
   }
 
   async findTradeById(id: string): Promise<TradeValue | null> {
-    const trade = await this.findOne({ where: { id } });
+    const trade = await this.findOne({
+      where: { id },
+      relations: ['client', 'productTrades', 'productTrades.product'],
+    });
+    if (!trade) return null;
+    return plainToInstance(TradeValue, trade);
+  }
+
+  async findByRangeDate(
+    filterTradeReport: FilterTradeReport,
+  ): Promise<TradeValue[]> {
+    const { startDate, endDate, tradeType } = filterTradeReport;
+    const adjustedEndDate = add(endDate, { days: 1 });
+    const query = this.createQueryBuilder('trade');
+    query.where('trade.type = :tradeType', { tradeType });
+    query.andWhere('trade.createdAt BETWEEN :startDate AND :endDate', {
+      startDate,
+      endDate: adjustedEndDate,
+    });
+    const trades = await query.getMany();
+    return trades.map((trade) => plainToInstance(TradeValue, trade));
+  }
+
+  async findByIdForTicket(id: string): Promise<TradeValue | null> {
+    const trade = await this.findOne({
+      where: { id },
+      relations: ['client', 'productTrades', 'productTrades.product'],
+    });
     if (!trade) return null;
     return plainToInstance(TradeValue, trade);
   }

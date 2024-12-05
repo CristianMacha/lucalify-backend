@@ -11,13 +11,27 @@ import { TradeController } from './infrastructure/trade.controller';
 import { CreateTradeUseCase } from './aplication/createTradeUseCase';
 import { TradeMysqlRepository } from './infrastructure/trade.repository';
 import { FilteredTradesUseCase } from './aplication/filteredTradesUseCase';
+import { PrinterModule } from '../printer/printer.module';
+import { ReportTradeByRangeDateUseCase } from './aplication/reportTradeByRangeDateUseCase';
+import { TradeTicketUseCase } from './aplication/tradeTicketUseCase';
+import { GetTradeByIdUseCase } from './aplication/getTradeByIdUseCase';
+import { ProductTradeMysqlRepository } from './infrastructure/product-trade.repository';
+import { GetProductTradeByRangeDateUseCase } from './aplication/getProductTradeByRangeDateUseCase';
+import { ProductTradeController } from './infrastructure/product-trade.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Trade, Payment, ProductTrade])],
-  controllers: [TradeController],
+  imports: [
+    TypeOrmModule.forFeature([Trade, Payment, ProductTrade]),
+    PrinterModule,
+  ],
+  controllers: [TradeController, ProductTradeController],
   providers: [
     CreateTradeUseCase,
     FilteredTradesUseCase,
+    ReportTradeByRangeDateUseCase,
+    TradeTicketUseCase,
+    GetTradeByIdUseCase,
+    GetProductTradeByRangeDateUseCase,
     JwtService,
     {
       provide: 'TradeRepository',
@@ -30,6 +44,10 @@ import { FilteredTradesUseCase } from './aplication/filteredTradesUseCase';
     {
       provide: 'ClientRepository',
       useClass: ClientMysqlRepository,
+    },
+    {
+      provide: 'ProductTradeRepository',
+      useClass: ProductTradeMysqlRepository,
     },
   ],
 })

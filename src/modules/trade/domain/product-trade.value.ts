@@ -14,8 +14,13 @@ export class ProductTradeValue implements ProductTradeEntity {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(createProductTrade: CreateProductTrade, userId: string) {
-    const { product, trade, price, quantity } = createProductTrade;
+  constructor(
+    userId: string,
+    product: ProductValue,
+    trade: TradeValue,
+    price: number,
+    quantity: number,
+  ) {
     this.id = uuid();
     this.product = product;
     this.trade = trade;
@@ -28,9 +33,8 @@ export class ProductTradeValue implements ProductTradeEntity {
   }
 }
 
-export interface CreateProductTrade {
-  product: ProductValue;
-  trade: TradeValue;
-  price: number;
-  quantity: number;
+export interface FilterProductTrade {
+  textSearch?: string;
+  startDate: Date;
+  endDate: Date;
 }

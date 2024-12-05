@@ -4,7 +4,11 @@ import { DataSource, Repository } from 'typeorm';
 import { Product } from './product.schema';
 import { ProductRepository } from '../domain/product.repository';
 import { plainToInstance } from 'class-transformer';
-import { ProductValue } from '../domain/product.value';
+import {
+  KardexFilter,
+  KardexResult,
+  ProductValue,
+} from '../domain/product.value';
 import { FilterProductDto } from '../aplication/dtos/filter-product.dto';
 import { ResponseList } from '../../../common/interfaces/response.interface';
 
@@ -71,5 +75,41 @@ export class ProductMysqlRepository
     );
     const products = await query.getMany();
     return products.map((product) => plainToInstance(ProductValue, product));
+  }
+
+  async getKardex(kardexFilter: KardexFilter): Promise<KardexResult[]> {
+    const { productCode, startDate, endDate } = kardexFilter;
+    const query = this.createQueryBuilder('product');
+    query.leftJoin('product.productTrades', 'productTrade');
+    query.leftJoin('productTrade.trade', 'trade');
+    query.where('productTrade.createdAt BETWEEN :startDate AND :endDate', {
+      startDate,
+      endDate,
+    });
+
+    if (productCode) {
+      query.andWhere('product.code = :productCode', { productCode });
+    }
+
+    query.select('product.code', 'productCode');
+    query.addSelect('product.name', 'productName');
+    query.addSelect(
+      'SUM(CASE WHEN trade.type = "sale" THEN productTrade.quantity ELSE 0 END)',
+      'salesCount',
+    );
+    query.addSelect(
+      'SUM(CASE WHEN trade.type = "purchase" THEN productTrade.quantity ELSE 0 END)',
+      'purchaseCount',
+    );
+    query.addSelect(
+      'SUM(CASE WHEN trade.type = "purchase" THEN productTrade.quantity ELSE 0 END) - SUM(CASE WHEN trade.type = "sale" THEN productTrade.quantity ELSE 0 END)',
+      'totalStock',
+    );
+    query.groupBy('product.code');
+    query.addGroupBy('product.name');
+    const kardex: KardexResult[] = await query.getRawMany();
+    return kardex.map((kardexItem) =>
+      plainToInstance(KardexResult, kardexItem),
+    );
   }
 }

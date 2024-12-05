@@ -10,6 +10,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IdentityModule } from './identity/identity.module';
 import { TradeModule } from './trade/trade.module';
+import { PrinterModule } from './printer/printer.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TradeModule } from './trade/trade.module';
     ClientModule,
     IdentityModule,
     TradeModule,
+    PrinterModule,
   ],
 })
 export class ModulesModule {}
