@@ -27,7 +27,7 @@ export class UserMysqlRepository
   }
 
   async findUserById(id: string): Promise<UserValue | null> {
-    const user = await this.findOne({ where: { id } });
+    const user = await this.findOne({ where: { id }, relations: ['role'] });
     if (!user) return null;
     return plainToInstance(UserValue, user);
   }

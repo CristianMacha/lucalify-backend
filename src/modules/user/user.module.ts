@@ -1,5 +1,7 @@
+import { ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 
 import { UserController } from './infrastructure/user.controller';
 import { User } from './infrastructure/user.schema';
@@ -8,8 +10,7 @@ import { UserUseCase } from './aplication/userUseCase';
 import { RoleMysqlRepository } from '../role/infrastructure/role.mysql.repository';
 import { AuthController } from './infrastructure/auth.controller';
 import { AuthUseCase } from './aplication/authUseCase';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { AccessMysqlRepository } from '../permission/infrastructure/access.mysql.repository';
 
 @Module({
   imports: [
@@ -34,6 +35,10 @@ import { ConfigService } from '@nestjs/config';
     {
       provide: 'RoleRepository',
       useClass: RoleMysqlRepository,
+    },
+    {
+      provide: 'AccessRepository',
+      useClass: AccessMysqlRepository,
     },
   ],
 })

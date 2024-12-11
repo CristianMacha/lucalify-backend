@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UserEntity } from './user.entity';
 import { RoleValue } from '../../role/domain/role.value';
+import { AccessValue } from '../../permission/domain/access.value';
 
 export class UserValue implements UserEntity {
   id: string;
@@ -47,4 +48,9 @@ export class UserValue implements UserEntity {
     const hashedPassword = bcrypt.hashSync(plainPassword, saltOrRounds);
     return new UserValue(name, email, hashedPassword, 'admin', role);
   }
+}
+
+export interface AuthMeResponse {
+  user: UserValue;
+  access: AccessValue[];
 }

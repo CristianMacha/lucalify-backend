@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { RoleUseCase } from '../aplication/roleUseCase';
 import { CreateRoleDto } from '../aplication/dtos/create-role.dto';
+import { AuthGuard } from '../../../common/guards/auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('Role')
+@UseGuards(AuthGuard)
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleUseCase: RoleUseCase) {}

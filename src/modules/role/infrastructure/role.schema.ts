@@ -1,5 +1,8 @@
-import { User } from '../../user/infrastructure/user.schema';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { RolePermission } from '../../permission/infrastructure/role-permission.schema';
+import { User } from '../../user/infrastructure/user.schema';
+import { RoleAccess } from '../../permission/infrastructure/role-access.schema';
 
 @Entity({ name: 'roles' })
 export class Role {
@@ -20,4 +23,10 @@ export class Role {
 
   @OneToMany(() => User, (user) => user.role)
   users: User[];
+
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
+  rolePermissions: RolePermission[];
+
+  @OneToMany(() => RoleAccess, (roleAccess) => roleAccess.role)
+  roleAccess: RoleAccess[];
 }
